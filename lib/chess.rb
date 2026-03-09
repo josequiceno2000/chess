@@ -16,6 +16,11 @@ class Game < Gosu::Window
 
     @bg_scale_x = width.to_f / @background.width
     @bg_scale_y = height.to_f / @background.height
+
+    @board_x = (width - @board.width) / 2.0
+    @board_y = (height - @board.height) / 2.0
+    @board_scale_x = width.to_f / @board.width
+    @board_scale_y = height.to_f / @board.height
   end
 
   def update
@@ -27,7 +32,7 @@ class Game < Gosu::Window
     # Rendering
 
     @background.draw(0, 0, -1, @bg_scale_x, @bg_scale_y)
-    @board.draw(0, 0, 0)
+    @board.draw(@board_x, @board_y, 0)
     @cursor.draw(20, 20, 1)
   end
 
@@ -39,3 +44,10 @@ class Game < Gosu::Window
 end
 
 Game.new.show
+
+# def load_pieces
+#   @pieces = {}
+#   # Example: loading a white pawn
+#   @pieces[:white_pawn] = Gosu::Image.new(asset_path('pawn_white.png'))
+#   # Then draw it with: @pieces[:white_pawn].draw(x, y, z)
+# end
