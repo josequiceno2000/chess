@@ -11,7 +11,7 @@ class Game < Gosu::Window
   BACKGROUND_PATH = File.join(ASSET_PATH, 'background.gif')
 
   def initialize
-    super 640, 480, fullscreen: true
+    super 1080, 600, fullscreen: true
     self.caption = 'Chess'
     @background = Gosu::Image.new(BACKGROUND_PATH, :tileable => true)
     @board = Gosu::Image.new(BOARD_PATH)
@@ -25,7 +25,14 @@ class Game < Gosu::Window
 
   def draw
     # Rendering
-    @background.draw(0, 0, -1, 0.3, 0.3)
+
+    @background.draw(
+      0,
+      0,
+      -1,
+      width.to_f / @background.width, 
+      height.to_f / @background.height
+    )
     @board.draw(0, 0, 0)
     @cursor.draw(20, 20, 1)
   end
