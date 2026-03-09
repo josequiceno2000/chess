@@ -19,11 +19,25 @@ class Game < Gosu::Window
     @board_x = (width - @board.width) / 2.0
     @board_y = (height - @board.height) / 2.0
 
-    @tile_size = @board.width / 8.0
+    @tile_size = (@board.width - 34) / 8.0
 
     load_pieces
 
-    @piece_scale = (@tile_size * 0.8) / @piece_images[:pawn_white].width
+    @piece_scale = (@tile_size * 0.6) / @piece_images[:pawn_white].width
+
+    setup_board
+  end
+
+  def setup_board
+    @grid = Array.new(8) { Array.new(8) }
+
+    back_row = %i[rook knight bishop queen king bishop knight rook]
+
+    back_row.each_with_index { |type, col| @grid[0][col] = :"#{type}_black" }
+    8.times { |col| @grid[1][col] = :pawn_black }
+
+    8.times { |col| @grid[6][col] = :pawn_white }
+    back_row.each_with_index { |type, col| @grid[7][col] = :"#{type}_white"}
   end
 
   def update
@@ -37,8 +51,11 @@ class Game < Gosu::Window
     @background.draw(0, 0, -1, @bg_scale_x, @bg_scale_y)
     @board.draw(@board_x, @board_y, 0)
 
-    draw_piece(4, 7, :king_white)
-    draw_piece(1, 1, :queen_black)
+    @grid.each_with_index do |row_array, row_index|
+      row_array.each_with_index do |piece_key, col_index|
+        draw_piece(col_index, row_index, piece_key) if piece_key
+      end
+    end
   end
 
   def load_pieces
@@ -58,8 +75,8 @@ class Game < Gosu::Window
   def draw_piece(column, row, piece_key)
     image = @piece_images[piece_key]
 
-    x_pos = @board_x + (column * @tile_size) + (@tile_size / 2.0)
-    y_pos = @board_y + (row * @tile_size) + (@tile_size / 2.0)
+    x_pos = @board_x + (column * @tile_size) + 34
+    y_pos = @board_y + (row * @tile_size) + 34
 
     image.draw_rot(x_pos, y_pos, 1, 0, 0.5, 0.5, @piece_scale, @piece_scale)
   end
