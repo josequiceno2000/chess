@@ -7,7 +7,7 @@ ASSET_PATH = File.expand_path('../assets', __dir__)
 # Game class
 class Game < Gosu::Window
   def initialize
-    super(640, 480)
+    super 640, 480, fullscreen: true
     self.caption = 'Chess'
     board_image_path = File.join(ASSET_PATH, 'board_plain_03.png')
     cursor_image_path = File.join(ASSET_PATH, 'cursor.png')
@@ -17,6 +17,7 @@ class Game < Gosu::Window
 
   def update
     # Game logic
+    close if Gosu.button_down?(Gosu::KB_ESCAPE)
   end
 
   def draw
