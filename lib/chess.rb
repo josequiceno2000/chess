@@ -6,13 +6,16 @@ ASSET_PATH = File.expand_path('../assets', __dir__)
 
 # Game class
 class Game < Gosu::Window
+  BOARD_PATH = File.join(ASSET_PATH, 'board_plain_03.png')
+  CURSOR_PATH = File.join(ASSET_PATH, 'cursor.png')
+  BACKGROUND_PATH = File.join(ASSET_PATH, 'background.gif')
+
   def initialize
     super 640, 480, fullscreen: true
     self.caption = 'Chess'
-    board_image_path = File.join(ASSET_PATH, 'board_plain_03.png')
-    cursor_image_path = File.join(ASSET_PATH, 'cursor.png')
-    @board = Gosu::Image.new(board_image_path)
-    @cursor = Gosu::Image.new(cursor_image_path)
+    @background = Gosu::Image.new(BACKGROUND_PATH, :tileable => true)
+    @board = Gosu::Image.new(BOARD_PATH)
+    @cursor = Gosu::Image.new(CURSOR_PATH)
   end
 
   def update
@@ -22,6 +25,7 @@ class Game < Gosu::Window
 
   def draw
     # Rendering
+    @background.draw(0, 0, -1, 0.3, 0.3)
     @board.draw(0, 0, 0)
     @cursor.draw(20, 20, 1)
   end
