@@ -13,6 +13,9 @@ class Game < Gosu::Window
     @background = Gosu::Image.new(asset_path('background.gif'), :tileable => true)
     @board = Gosu::Image.new(asset_path('board.png'))
     @cursor = Gosu::Image.new(asset_path('cursor.png'))
+
+    @bg_scale_x = width.to_f / @background.width
+    @bg_scale_y = height.to_f / @background.height
   end
 
   def update
@@ -23,13 +26,7 @@ class Game < Gosu::Window
   def draw
     # Rendering
 
-    @background.draw(
-      0,
-      0,
-      -1,
-      width.to_f / @background.width, 
-      height.to_f / @background.height
-    )
+    @background.draw(0, 0, -1, @bg_scale_x, @bg_scale_y)
     @board.draw(0, 0, 0)
     @cursor.draw(20, 20, 1)
   end
