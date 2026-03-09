@@ -18,6 +18,12 @@ class Game < Gosu::Window
 
     @board_x = (width - @board.width) / 2.0
     @board_y = (height - @board.height) / 2.0
+
+    @tile_size = @board.width / 8.0
+
+    load_pieces
+
+    @piece_scale = (@tile_size * 0.8) / @piece_images[:pawn_white].width
   end
 
   def update
@@ -30,6 +36,32 @@ class Game < Gosu::Window
 
     @background.draw(0, 0, -1, @bg_scale_x, @bg_scale_y)
     @board.draw(@board_x, @board_y, 0)
+
+    draw_piece(4, 7, :king_white)
+    draw_piece(1, 1, :queen_black)
+  end
+
+  def load_pieces
+    @piece_images = {}
+    colors = %w[white black]
+    types = %w[pawn rook knight bishop queen king]
+
+    colors.each do |color|
+      types.each do |type|
+        key = "#{type}_#{color}".to_sym
+        filename = "#{key}.png"
+        @piece_images[key] = Gosu::Image.new(asset_path(filename))
+      end
+    end
+  end
+
+  def draw_piece(column, row, piece_key)
+    image = @piece_images[piece_key]
+
+    x_pos = @board_x + (column * @tile_size) + (@tile_size / 2.0)
+    y_pos = @board_y + (row * @tile_size) + (@tile_size / 2.0)
+
+    image.draw_rot(x_pos, y_pos, 1, 0, 0.5, 0.5, @piece_scale, @piece_scale)
   end
 
   private
@@ -40,10 +72,3 @@ class Game < Gosu::Window
 end
 
 Game.new.show
-
-# def load_pieces
-#   @pieces = {}
-#   # Example: loading a white pawn
-#   @pieces[:white_pawn] = Gosu::Image.new(asset_path('pawn_white.png'))
-#   # Then draw it with: @pieces[:white_pawn].draw(x, y, z)
-# end
