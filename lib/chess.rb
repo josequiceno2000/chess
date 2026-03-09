@@ -13,8 +13,6 @@ class Game < Gosu::Window
     cursor_image_path = File.join(ASSET_PATH, 'cursor.png')
     @board = Gosu::Image.new(board_image_path)
     @cursor = Gosu::Image.new(cursor_image_path)
-    @x = 0
-    @y = 0
   end
 
   def update
@@ -23,7 +21,7 @@ class Game < Gosu::Window
 
   def draw
     # Rendering
-    @board.draw(@x, @y, 0)
+    @board.draw(0, 0, 0)
     @cursor.draw(20, 20, 1)
   end
 end
